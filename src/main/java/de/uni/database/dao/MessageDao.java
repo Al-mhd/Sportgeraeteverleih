@@ -1,8 +1,7 @@
-package de.uni.database.repository;
+package de.uni.database.dao;
 
 import de.uni.constants.AppConstants;
 import de.uni.database.entity.MessageEntity;
-import de.uni.database.entity.ProductEntity;
 
 import java.sql.*;
 import java.text.SimpleDateFormat;
@@ -19,7 +18,7 @@ import java.util.List;
  * 	receiver_name TEXT
  * 	)
  */
-public class MessageRepo {
+public class MessageDao {
     public void insertMessage(MessageEntity messageEntity) {
         String msg_date = new SimpleDateFormat("yyyy.MM.dd HH:mm:ss").format(new Date());
         messageEntity.setMsg_date(msg_date);
@@ -54,6 +53,38 @@ public class MessageRepo {
             Statement statement = connection.createStatement();
             statement.setQueryTimeout(30);  // set timeout to 30 sec.
             ResultSet rs = statement.executeQuery("select * from message WHERE (sender_name = '" + senderName + "' AND receiver_name = '" + receiverName + "') OR (sender_name = '" + receiverName + "' AND receiver_name = '" + senderName + "');");
+            while (rs.next()) {
+                messages.add(
+                        new MessageEntity(
+                                rs.getInt("pk"),
+                                rs.getString("msg"),
+                                rs.getString("msg_date"),
+                                rs.getString("sender_name"),
+                                rs.getString("receiver_name")
+                        ));
+            }
+        } catch (SQLException | ClassNotFoundException e) {
+            System.err.println(e.getMessage());
+        } finally {
+            try {
+                if (connection != null) {
+                    connection.close();
+                }
+            } catch (SQLException e) {
+                System.err.println(e.getMessage());
+            }
+        }
+        return messages;
+    }
+    public List<MessageEntity> getAllMessagesForOneUser(String userName) {
+        ArrayList<MessageEntity> messages = new ArrayList<>();
+        Connection connection = null;
+        try {
+            Class.forName("org.sqlite.JDBC");
+            connection = DriverManager.getConnection("jdbc:sqlite:" + AppConstants.APP_MESSAGES_DB);
+            Statement statement = connection.createStatement();
+            statement.setQueryTimeout(30);  // set timeout to 30 sec.
+            ResultSet rs = statement.executeQuery("select * from message WHERE (sender_name = '" + userName + "' OR receiver_name = '" + userName + "');");
             while (rs.next()) {
                 messages.add(
                         new MessageEntity(

@@ -1,6 +1,6 @@
 package de.uni.servlet;
 
-import de.uni.database.repository.ProductRepo;
+import de.uni.database.dao.ProductDao;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -11,13 +11,17 @@ import java.io.IOException;
 
 @WebServlet(name = "deleteOffer", value = "/deleteOffer")
 public class DeleteOfferServlet extends HttpServlet {
+	private ProductDao productDao;
 
-    @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        Integer pk = Integer.valueOf(req.getParameter("pk"));
-        ProductRepo productRepo = new ProductRepo();
-        productRepo.deleteProductByPk(pk);
+	public void init() {
+		productDao = new ProductDao();
+	}
 
-        resp.sendRedirect("index.jsp");
-    }
+	@Override
+	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		Integer pk = Integer.valueOf(req.getParameter("pk"));
+		productDao.deleteProductByPk(pk);
+
+		resp.sendRedirect("index.jsp");
+	}
 }

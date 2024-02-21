@@ -1,0 +1,32 @@
+@startuml
+'https://plantuml.com/sequence-diagram
+skinparam style strictuml
+
+actor Benutzer
+
+Benutzer->index.jsp : Benutzer besucht die Webseite
+activate index.jsp
+index.jsp->checkLogin.jsp : Prüfe, ob Benutzer eingeloggt wurde
+deactivate index.jsp
+activate checkLogin.jsp
+checkLogin.jsp->login.jsp : wenn Benutzer nicht eingeloggt ist, zur Loginseite weiterleiten
+deactivate checkLogin.jsp
+activate login.jsp
+Benutzer->login.jsp : Logindaten eingeben
+login.jsp->LoginServlet : Logindaten prüfen
+deactivate login.jsp
+activate LoginServlet
+database Datenbank
+LoginServlet->Datenbank : Logindaten gegen Datenbank prüfen
+Datenbank-->LoginServlet
+'LoginServlet->LoginServlet : mit Datenbank kommunizieren
+LoginServlet->failed.jsp : Logindaten sind ungültig
+deactivate LoginServlet
+activate failed.jsp
+deactivate LoginServlet
+failed.jsp->failed.jsp : Nachricht über falsche Anmeldung zeigen
+failed.jsp-->login.jsp : zur login.jsp weiterleiten
+deactivate failed.jsp
+activate login.jsp
+
+@enduml

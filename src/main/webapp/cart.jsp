@@ -1,11 +1,10 @@
 <%@ page import="de.uni.Cart" %>
-<%@ page import="de.uni.database.repository.ProductRepo" %>
+<%@ page import="de.uni.database.dao.ProductDao" %>
 <%@ page import="java.util.ArrayList" %>
 <%@ page import="de.uni.database.entity.ProductEntity" %>
 <%@ page import="java.text.DecimalFormat" %>
 <%@ page import="java.util.Map" %>
-<%@ page import="java.util.LinkedHashMap" %>
-<%@ page import="java.util.TreeMap" %>
+<%@ page import="de.uni.database.dao.ProductDao" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
@@ -30,7 +29,7 @@
 <%
     DecimalFormat dcf = new DecimalFormat("#.##");
     request.setAttribute("dcf", dcf);
-    ProductRepo productRepo = new ProductRepo();
+    ProductDao productDao = new ProductDao();
     ArrayList<Cart> cart_list = (ArrayList<Cart>) session.getAttribute("cart-list");
     double total_price = 0;
     if (cart_list == null) {
@@ -45,7 +44,7 @@
 
 <%
 } else {
-    Map<ProductEntity, Integer> products = productRepo.getCartProducts(cart_list);
+    Map<ProductEntity, Integer> products = productDao.getCartProducts(cart_list);
     // TODO: sort products using productEntity.getPk()
 %>
 <div class="container my-3">
@@ -54,7 +53,7 @@
         <thead>
         <tr>
             <th scope="col">Name</th>
-            <th scope="col">Price</th>
+            <th scope="col">Preis</th>
             <%--            <th scope="col">count</th>--%>
             <th scope="col">Cancel</th>
         </tr>
@@ -77,28 +76,20 @@
                         <a class="btn bnt-sm btn-incre"
                            href="quantity-inc-dec?action=inc&pk=<%=product.getKey().getPk()%>">
                             <%--                            <i class="fas fa-plus-square"></i>--%>
-                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor"
-                                 class="bi bi-plus-circle" viewBox="0 0 16 16">
-                                <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16"/>
-                                <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4"/>
-                            </svg>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-plus-circle" viewBox="0 0 16 16"><path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16"/><path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4"/></svg>
                         </a>
                         <input type="text" name="quantity" class="form-control" value="<%=product.getValue()%>"
                                readonly>
                         <a class="btn btn-sm btn-decre"
                            href="quantity-inc-dec?action=dec&pk=<%=product.getKey().getPk()%>">
                             <%--                            <i class="fas fa-minus-square"></i>--%>
-                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor"
-                                 class="bi bi-dash-circle" viewBox="0 0 16 16">
-                                <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16"/>
-                                <path d="M4 8a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7A.5.5 0 0 1 4 8"/>
-                            </svg>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-dash-circle" viewBox="0 0 16 16"><path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16"/><path d="M4 8a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7A.5.5 0 0 1 4 8"/></svg>
                         </a>
                     </div>
                     <%--                    <button type="submit" class="btn btn-primary btn-sm">Buy</button>--%>
                 </form>
             </td>
-            <td><a href="remove-from-cart?pk=<%=product.getKey().getPk() %>" class="btn btn-sm btn-danger">Remove</a>
+            <td><a href="remove-from-cart?pk=<%=product.getKey().getPk()%>" class="btn btn-sm btn-danger">Remove</a>
             </td>
         </tr>
         <%
@@ -109,7 +100,7 @@
     </table>
     <div class="d-flex py-3">
         <h3>Total Price:  <%= dcf.format(total_price)%> $</h3>
-        <a class="mx-3 btn btn-primary" href="cart-check-out">Check Out</a>
+        <a class="mx-3 btn btn-primary" href="geraeteausleihe">Geraeteausleihe</a>
     </div>
 </div>
 <%

@@ -2,10 +2,10 @@
 <html>
 <head>
     <title>Login failed</title>
-    <%@include file="includes/header.jsp" %>
+    <%@include file="../includes/header.jsp" %>
 </head>
 <body>
-<%@include file="includes/navbar.jsp" %>
+<%@include file="../includes/navbar.jsp" %>
 
 <div class="container">
     <div class="card w-50 mx-auto my-5">
@@ -25,13 +25,13 @@
     </div>
 </div>
 
-<% response.setHeader("Refresh", "2;url=index.jsp"); %>
+<% response.setHeader("Refresh", "2;url=../index.jsp"); %>
 
 
 <%--<a href="login.jsp">Login</a>--%>
 <%--<br/>--%>
 <%--<a href="register.jsp">Register</a>--%>
 
-<%@include file="includes/footer.jsp" %>
+<%@include file="../includes/footer.jsp" %>
 </body>
 </html>

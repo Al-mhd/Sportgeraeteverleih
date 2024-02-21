@@ -1,7 +1,7 @@
 package de.uni.servlet;
 
+import de.uni.database.dao.ProductDao;
 import de.uni.database.entity.ProductEntity;
-import de.uni.database.repository.ProductRepo;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -18,14 +18,14 @@ public class AddOfferServlet extends HttpServlet {
         String productName = req.getParameter("offerName");
         double productPrice = Double.parseDouble(req.getParameter("preis"));
         String productImageName = req.getParameter("img");
-        System.out.println("req.getSession().getAttribute(\"name\") = " + req.getSession().getAttribute("name"));
+//        System.out.println("req.getSession().getAttribute(\"name\") = " + req.getSession().getAttribute("name"));
         ProductEntity productEntity = new ProductEntity(
                 productName,
                 productPrice,
                 productImageName,
                 String.valueOf(req.getSession().getAttribute("name")));
-        ProductRepo productRepo = new ProductRepo();
-        productRepo.insertProduct(productEntity);
+        ProductDao productDao = new ProductDao();
+        productDao.insertProduct(productEntity);
 
         resp.sendRedirect("index.jsp");
     }

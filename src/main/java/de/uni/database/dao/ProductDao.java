@@ -1,4 +1,4 @@
-package de.uni.database.repository;
+package de.uni.database.dao;
 
 import de.uni.Cart;
 import de.uni.constants.AppConstants;
@@ -7,7 +7,7 @@ import de.uni.database.entity.ProductEntity;
 import java.sql.*;
 import java.util.*;
 
-public class ProductRepo {
+public class ProductDao {
     public void insertProduct(ProductEntity productEntity) {
         Connection connection = null;
         try {

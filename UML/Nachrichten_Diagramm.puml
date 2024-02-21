@@ -1,0 +1,35 @@
+@startuml
+'https://plantuml.com/sequence-diagram
+
+skinparam style strictuml
+autonumber
+actor Benutzer
+
+Benutzer->index.jsp: Benutzer schaut die Angebote an
+activate index.jsp
+Benutzer->index.jsp: Benutzer will eine Nachricht an einem anderen Benutzer schreiben
+index.jsp->chat.jsp: alle Nachrichten zwischen zwei Benutzern anzeigen
+deactivate index.jsp
+activate chat.jsp
+Benutzer->chat.jsp: Benutzer sendet eine Nachricht
+chat.jsp->ChatServerEndpoint: Nachricht an Server senden
+activate ChatServerEndpoint
+database Datenbank
+ChatServerEndpoint->Datenbank: Server speichert die Nachricht in der Datenbank
+Datenbank-->ChatServerEndpoint
+ChatServerEndpoint-->chat.jsp
+deactivate ChatServerEndpoint
+chat.jsp->chat.jsp: neue Nachricht zeigen
+
+
+
+'Benutzer->Server:Benutzer besucht Nachrichten Webseite
+'Server-->Benutzer
+'
+'Benutzer->Server: Benutzer sendet eine Nachricht
+'Server->Datenbank: Server speichert die Nachricht in der Datenbank
+'Server-->Benutzer
+
+
+
+@enduml

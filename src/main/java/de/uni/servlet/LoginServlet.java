@@ -1,7 +1,7 @@
 package de.uni.servlet;
 
-import de.uni.database.entity.BenutzerEntity;
-import de.uni.database.repository.BenutzerRepo;
+import de.uni.database.dao.UserDao;
+import de.uni.database.entity.UserEntity;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
@@ -12,37 +12,28 @@ import java.io.IOException;
 
 @WebServlet(name = "loginServlet", value = "/login")
 public class LoginServlet extends HttpServlet {
-	private BenutzerRepo benutzerRepo;
+	private UserDao userDao;
 
 	public void init() {
-		benutzerRepo = new BenutzerRepo();
+		userDao = new UserDao();
 	}
 
-	public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
+	public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
 		response.setContentType("text/html");
 		String username = request.getParameter("username");
 		String password = request.getParameter("password");
-		BenutzerEntity benutzerEntity = new BenutzerEntity(username, password);
+		UserEntity userEntity = new UserEntity(username, password);
+		userEntity = userDao.checkIfBenutzerExists(userEntity);
 		HttpSession session = request.getSession();
-//		PrintWriter out = response.getWriter();
-//		out.println("<html><body>");
-//		out.println("<h1> username = " + username + "</h1>");
-//		out.println("<h1> password = " + password + "</h1>");
-
-		boolean exists = benutzerRepo.checkIfBenutzerExists(benutzerEntity);
-		if (exists) {
+		if (userEntity != null) {
 			// redirect to success
-//			out.println("<h1>Login success</h1>");
-			session.setAttribute("name", benutzerEntity.getUsername());
-			response.sendRedirect("success.jsp");
+			session.setAttribute("name", userEntity.getUsername());
+			session.setAttribute("role", userEntity.getRole());
+			response.sendRedirect("login/success.jsp");
 		} else {
 			// redirect to failed
-			response.sendRedirect("failed.jsp");
-//			out.println("<h1>Login failed</h1>");
+			response.sendRedirect("login/failed.jsp");
 		}
-		// Hello
-
-//		out.println("</body></html>");
 	}
 
 	public void destroy() {

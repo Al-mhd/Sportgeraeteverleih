@@ -1,3 +1,4 @@
+<%@ page import="static de.uni.constants.AppConstants.ADMIN_ROLE_NAME" %>
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
     <div class="container">
 
@@ -5,7 +6,7 @@
         <%
             if (session.getAttribute("name") != null) {
         %>
-        <a class="navbar-brand" href="#"> - Welcome, <%=session.getAttribute("name")%>
+        <a class="navbar-brand" href="index.jsp"> - Welcome, <%=session.getAttribute("name")%>
         </a>
         <%
             }
@@ -19,14 +20,22 @@
                 <li class="nav-item"><a class="nav-link" href="login.jsp">Login</a></li>
                 <%
                 } else {
-                %>
-                <%--                <li class="nav-item"><a class="nav-link" href="#">Welcome, <%=session.getAttribute("name")%></a></li>--%>
-                <li class="nav-item"><a class="nav-link" href="profile.jsp">my profile</a></li>
-                <li class="nav-item"><a class="nav-link" href="addOffer.jsp">create offer</a></li>
-                <li class="nav-item"><a class="nav-link" href="cart.jsp">Cart</a></li>
-                <li class="nav-item"><a class="nav-link" href="logout.jsp">Logout</a></li>
-                <%
+					if (session.getAttribute("role").equals(ADMIN_ROLE_NAME)){
+                    %>
+                        <li class="nav-item"><a class="nav-link" href="users.jsp">Benutzer</a></li>
+                    <%
+                    } else {
+                    %>
+                        <li class="nav-item"><a class="nav-link" href="profile.jsp">Profile</a></li>
+                        <li class="nav-item"><a class="nav-link" href="messages.jsp">Nachrichten</a></li>
+                        <li class="nav-item"><a class="nav-link" href="addOffer.jsp">Angebote erstellen</a></li>
+                        <li class="nav-item"><a class="nav-link" href="cart.jsp">Warenkorb</a></li>
+                    <%
                     }
+                    %>
+                <li class="nav-item"><a class="nav-link" href="login/logout.jsp">Logout</a></li>
+                <%
+				}
                 %>
             </ul>
         </div>

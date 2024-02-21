@@ -11,23 +11,23 @@
         <div class="card-header text-center">Registration</div>
         <div class="card-body">
             <%--            <form action="${pageContext.request.contextPath}/login" method="get">--%>
-            <form action="register" method="get">
+            <form action="register" method="post">
                 <div class="form-group">
                     <label>Username</label>
-                    <input type="text" name="username" class="form-control" placeholder="username">
+                    <input required type="text" name="username" class="form-control" placeholder="username">
                 </div>
                 <div class="form-group">
                     <label>Password</label>
-                    <input type="password" name="password" class="form-control" placeholder="password">
+                    <input required type="password" name="password" class="form-control" placeholder="password">
                 </div>
                 <div class="form-group">
                     <label>Confirm password</label>
-                    <input type="password" name="rpassword" class="form-control" placeholder="password again">
+                    <input required type="password" name="rpassword" class="form-control" placeholder="password again">
                 </div>
                 <% if (session.getAttribute("alert") != null) {
                     if (session.getAttribute("alert").equals("true")) {
                 %>
-                <script>alert("Password must be correct"); </script>
+                <script>alert("username or password is empty and password must be repeated correctly"); </script>
                 <%
                         }
                     }

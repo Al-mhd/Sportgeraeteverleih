@@ -1,6 +1,7 @@
 <%@ page import="java.util.List" %>
 <%@ page import="de.uni.database.entity.MessageEntity" %>
-<%@ page import="de.uni.database.repository.MessageRepo" %>
+<%@ page import="de.uni.database.dao.MessageDao" %>
+<%@ page import="de.uni.database.dao.MessageDao" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
@@ -34,8 +35,8 @@
 <%
     String sender = (String) session.getAttribute("name"); // this user (logged-in user)
     String receiver = (String) session.getAttribute("owner_name"); // owner name of offer
-    MessageRepo messageRepo = new MessageRepo();
-    List<MessageEntity> allMessages = messageRepo.getAllMessages(sender, receiver);
+    MessageDao messageDao = new MessageDao();
+    List<MessageEntity> allMessages = messageDao.getAllMessages(sender, receiver);
     for (MessageEntity msg : allMessages) {
         //
         if (msg.getSender_name().equals(sender)) {
@@ -57,16 +58,24 @@
     }
 %>
 
-<form id="form_id">
-    <input type="text" name="new_message" id="textMessage">
-    <input type="button" value="Send" onclick="sendMessage()">
-</form>
+        <form id="form_id">
+            <input type="text" name="new_message" id="textMessage">
+            <input type="button" value="send message" onclick="sendMessage()">
+<%--        </form>--%>
+<%--        <form action="send-image" method="post">--%>
+            <div class="form-group">
+                <label>Image</label>
+                <input type="file" name="img" class="form-control" placeholder="upload image">
+            </div>
+            <input type="button" name="image_path" value="send image" onclick="sendImage()">
+<%--            <div class="text-center">--%>
+<%--                <button type="submit" class="btn btn-primary">send image</button>--%>
+<%--            </div>--%>
+        </form>
 <script type="text/javascript">
     let textMessage = document.getElementById("textMessage");
-
     // open connection
     const webSocket = new WebSocket("ws://localhost:8080/Sportgeraeteverleih_war/chat");
-
     webSocket.onopen = function () {
         console.log("CLIENT: server Connected. '<%=sender%>' is successfully connected with '<%=receiver%>'")
     };
@@ -75,6 +84,21 @@
             console.log("CLIENT: internal server error '" + event.data + "'")
         }
     };
+
+    function sendImage() {
+        let file = document.getElementById('image_path');
+        let reader = new FileReader();
+        let rawData = new ArrayBuffer();
+        reader.loadend = function (e) {
+        };
+        reader.onload = function (e) {
+            let rawData = e.target.result;
+            let byteArray = new Uint8Array(rawData);
+            let fileByteArray = [];
+            webSocket.send(byteArray.buffer);
+        }
+        reader.readAsArrayBuffer(file);
+    }
 
     function sendMessage() {
         console.log("CLIENT: sendMessage")
@@ -105,7 +129,7 @@
         let sec = d.getSeconds()
         if (sec < 10) { sec = "0" + sec; }
         let date_to_show = y + "." + m + "." + day + " " + hour + ":" + min + ":" + sec
-        div_sender.innerHTML += "<strong><%=sender%></strong><p>" + textMessage.value + "</p><span class='time-right'>" + d. + "</span>"
+        div_sender.innerHTML += "<strong><%=sender%></strong><p>" + textMessage.value + "</p><span class='time-right'>" + date_to_show + "</span>"
         let form_node = document.getElementById('form_id')
         // document.body.appendChild(div_sender)
         document.body.insertBefore(div_sender, form_node)

@@ -1,10 +1,3 @@
-<%--
-  Created by IntelliJ IDEA.
-  User: m
-  Date: 19.01.24
-  Time: 19:19
-  To change this template use File | Settings | File Templates.
---%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
@@ -21,16 +14,16 @@
         <form action="addOffer" method="post">
             <div class="form-group">
                 <label>Name</label>
-                <input type="text" name="offerName" class="form-control" placeholder="offer name">
+                <input required type="text" name="offerName" class="form-control" placeholder="offer name">
             </div>
             <div class="form-group">
                 <label>Price</label>
-                <input type="text" name="preis" class="form-control" placeholder="price">
+                <input required type="text" name="preis" class="form-control" placeholder="Preis in Euro">
             </div>
             <div class="form-group">
                 <label>Image</label>
                 <%--                <input type="password" name="img" class="form-control" placeholder="image name">--%>
-                <input type="file" name="img" class="form-control" placeholder="upload image">
+                <input required type="file" name="img" class="form-control" placeholder="upload image">
             </div>
             <div class="text-center">
                 <button type="submit" class="btn btn-primary">Create offer</button>
