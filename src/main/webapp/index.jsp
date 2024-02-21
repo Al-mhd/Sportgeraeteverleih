@@ -51,10 +51,12 @@
             List<ProductEntity> products = productDao.getAllProducts();
             if (!products.isEmpty()) {
                 for (ProductEntity productEntity : products) {
+//                    System.out.println("images/" + productEntity.getOwner_name() + "/" + productEntity.getImage());
         %>
         <div class="col-md-3 my-3">
             <div class="card w-100">
-                <img class="card-img-top" src="images/<%=productEntity.getImage()%>" alt="Card image cap">
+<%--                <img class="card-img-top" src="images/<%=productEntity.getImage()%>" alt="Card image cap">--%>
+                <img class="card-img-top" src="images/<%=productEntity.getOwner_name()%>/<%=productEntity.getImage()%>" alt="Card image cap">
                 <div class="card-body">
                     <h5 class="card-title"><%=productEntity.getName()%>
                     </h5>

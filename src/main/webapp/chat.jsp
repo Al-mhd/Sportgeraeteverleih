@@ -13,25 +13,6 @@
 <%@include file="includes/checkLogin.jsp" %>
 <%@include file="includes/navbar.jsp" %>
 
-<%--
-    x get sender name
-        = sessen.getAttribute("name")
-    x get receiver name
-        = owner name
-    x get all messages between sender and receiver from database
-        = List<Msg> allMsgs
-        x create database
-        x create entity
-        x create repo
-    x show all messages
-        = see method getAllMsgAndCreateHTML(..) in class AppUtil in WebApp project
-    x set input field to write new message
-    x send button
-        onclick="sendMessage()"
-            this method will call the method onMessage(..) in class ChatServerEndpoint to insert new message in database
-    x reload page
---%>
-
 <%
     String sender = (String) session.getAttribute("name"); // this user (logged-in user)
     String receiver = (String) session.getAttribute("owner_name"); // owner name of offer

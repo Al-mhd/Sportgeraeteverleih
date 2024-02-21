@@ -17,7 +17,7 @@ public class AddOfferServlet extends HttpServlet {
 
         String productName = req.getParameter("offerName");
         double productPrice = Double.parseDouble(req.getParameter("preis"));
-        String productImageName = req.getParameter("img");
+        String productImageName = (String) req.getSession().getAttribute("uploaded");
 //        System.out.println("req.getSession().getAttribute(\"name\") = " + req.getSession().getAttribute("name"));
         ProductEntity productEntity = new ProductEntity(
                 productName,

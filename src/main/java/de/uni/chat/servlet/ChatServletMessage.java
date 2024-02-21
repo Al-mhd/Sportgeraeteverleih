@@ -18,6 +18,7 @@ public class ChatServletMessage extends HttpServlet {
         String ownerName = request.getParameter("owner_name");
         request.getSession().setAttribute("owner_name", ownerName);
 
-        response.sendRedirect("chat.jsp");
+//        response.sendRedirect("chat.jsp");
+        response.sendRedirect("chat2.jsp");
     }
 }
